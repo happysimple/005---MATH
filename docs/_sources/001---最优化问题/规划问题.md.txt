@@ -1,0 +1,189 @@
+# 规划问题
+
+## 1.线性规划
+
+如果目标函数及约束条件均为线性函数，则称为线性规划问题！
+
+Matlab规定线性规划的标准形式为：
+
+$$
+min\quad c^Tx
+$$
+
+$$
+s.t.\quad Ax\le b
+$$
+
+其中，式(1)称为``目标函数``，式(2)称为``约束条件``，$x$ 称为``决策变量``，满足约束条件的解称为``可行解``，使目标函数达到最小值的可行解称为``最优解``。
+
+例子：
+
+$$
+max \quad z=2x_1+3x_2
+$$
+
+$$
+s.t.
+\begin{cases} 
+x_1+x_2\le 5\\
+3x_1+2x_2\ge6\\
+x_1+x_2=5\\
+0\le x_1,x_2\le10\\
+\end{cases}
+$$
+
+```matlab
+c=[2;3];
+a=[1,1
+   -3,-2];
+b=[5;-6];
+aeq=[1,1];
+beq=5;
+lb=[0;0];
+rb=[10;10];
+[x,y,exitflag]=linprog(-c,a,b,aeq,beq,lb,rb);
+```
+
+<img src="..\_static\001.png" alt="016" style="zoom:50%;" />
+
+## 2.二次规划
+
+如果目标函数为自变量的二次函数，约束条件全是线性函数，则称为二次规划！
+
+Matlab规定二次规划的标准形式为：
+
+$$
+min\quad \frac{1}{2}x^THx+f^Tx
+$$
+
+$$
+s.t.\quad Ax\le b
+$$
+
+其中，$H$为实对称矩阵
+
+例子：
+
+$$
+min\quad f(x)=2x_1^2-4x_1x_2+4x_2^2-6x_1-3x_2
+$$
+
+$$
+s.t.
+\begin{cases} 
+x_1+x_2\le 15\\
+3x_1+2x_2\ge6\\
+x_1+x_2=8\\
+0\le x_1,x_2\le10\\
+\end{cases}
+$$
+
+```matlab
+h=[4,-4
+   -4,8];
+f=[-6;-3];
+a=[1,1
+   -3,-2];
+b=[15;-6];
+aeq=[1,1];
+beq=8;
+lb=[0;0];
+rb=[10;10];
+[x,y,exitflag]=quadprog(h,f,a,b,aeq,beq,lb,rb);
+```
+
+## 3.非线性规划
+
+如果目标函数及约束条件存在非线性函数，则称为非线性规划问题！
+
+Matlab规定非线性规划的标准形式为：
+
+$$
+min \quad f(x)
+$$
+
+$$
+s.t.
+\begin{cases} 
+Ax\le b\\
+Aeq\cdot x=beq\\
+c(x)\le0\\
+ceq(x)=0
+\end{cases}
+$$
+
+其中，$c(x)、ceq(x)$是非线性向量函数。
+
+例子：
+
+$$
+max \quad z=x_1^2+3x_2+x_3 \\
+s.t.
+\begin{cases} 
+x_1+4x_2+2x_3\ge 8\\
+3x_1\cdot2x_2\ge6\\
+x_1+x_2=8\\
+x_1^2+x_3=10\\
+0\le x_1,x_2,x_3\le10\\
+\end{cases}
+$$
+
+```matlab
+A=[1,4,2];
+b=8;
+aeq=[1,1,0];
+beq=8;
+lb=[0;0;0];
+rb=[10;10;10];
+[x,y,exitflag]=fmincon(@fun1,[2;6;6],-A,-b,aeq,beq,lb,rb,@fun2);
+
+function f=fun1(x)
+    f=x(1)^2+3*x(2)+x(3);
+end
+
+function [g,h]=fun2(x)
+    g=-3*x(1)*2*x(2)+6;
+    h=x(1)^2+x(3)-10;
+end
+```
+## 4.0-1整数规划
+
+规划中的变量限制为整数时，称为整数规划！
+
+Matlab规定整数规划的标准形式为：
+
+$$
+min \quad f^Tx
+$$
+
+$$
+s.t. 
+\begin{cases}
+Ax\le b \\
+Aeq\cdot x=beq\\
+x_i=0或1
+\end{cases}
+$$
+
+例子：
+
+$$
+min \quad z=x_1+3x_2+x_3 \\
+s.t.
+\begin{cases} 
+x_1+4x_2+4x_3\ge 4\\
+x_1+x_2=1\\
+x_i=0,1(i=1,2,3)
+\end{cases}
+$$
+
+```matlab
+f=[1;3;1];
+A=[1 4 4];
+b=4;
+aeq=[1,1,0];
+beq=1;
+lb=[0;0;0];
+rb=[1;1;1];
+[x,y,exitflag]=intlinprog(f,[1,2,3],A,b,aeq,beq,lb,rb);% [1,2,3]代表x1-x3都是整数
+```
