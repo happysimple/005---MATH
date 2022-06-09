@@ -1,0 +1,40 @@
+# 多项式拟合
+
+
+```{caution}
+poyfit在拟合中使用具有缺失值的观测值
+```
+
+- 函数表达式：$p(x)=p_1x^n+p_2x^{n-1}+...+p_nx+p_{n+1}$
+
+```matlab
+% 加载数据
+load carbig
+X = Acceleration;
+Y = Horsepower;
+
+% 剔除NAN
+D = [X,Y];
+D = rmmissing(D,1);
+X = D(:,1);
+Y = D(:,2);
+
+% 一元非线性回归
+p=polyfit(X,Y,2);
+
+% 建立方程
+syms x
+YFIT = p(1)*x^2 + p(2)*x + p(3);
+YFIT = vpa(YFIT,3);
+
+% R
+R=corrcoef(X,Y);
+
+% 绘图
+x=linspace(min(X),max(X));
+y=polyval(p,x);
+plot(X,Y,'.',x,y,'-','LineWidth',1.2);
+```
+
+<img src="E:\002---Web\005---MATH\source\_static\11.png" alt="11" style="zoom:40%;" />
+

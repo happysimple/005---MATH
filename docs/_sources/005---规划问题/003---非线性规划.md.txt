@@ -1,0 +1,55 @@
+# 非线性规划
+
+```{note}
+如果目标函数及约束条件存在非线性函数，则称为非线性规划问题！
+```
+
+Matlab规定非线性规划的标准形式如下，其中，$c(x)、ceq(x)$是非线性向量函数。
+
+$$
+\begin{flalign}
+&min \quad f(x)\\
+&s.t.
+\begin{cases} 
+Ax\le b\\
+Aeq\cdot x=beq\\
+c(x)\le0\\
+ceq(x)=0
+\end{cases}
+\end{flalign}
+$$
+
+例子：
+
+$$
+\begin{flalign}
+&max \quad z=x_1^2+3x_2+x_3 \\
+&s.t.
+\begin{cases} 
+x_1+4x_2+2x_3\ge 8\\
+3x_1\cdot2x_2\ge6\\
+x_1+x_2=8\\
+x_1^2+x_3=10\\
+0\le x_1,x_2,x_3\le10\\
+\end{cases}
+\end{flalign}
+$$
+
+```matlab
+A=[1,4,2];
+b=8;
+aeq=[1,1,0];
+beq=8;
+lb=[0;0;0];
+rb=[10;10;10];
+[x,y,exitflag]=fmincon(@fun1,[2;6;6],-A,-b,aeq,beq,lb,rb,@fun2);
+
+function f=fun1(x)
+    f=x(1)^2+3*x(2)+x(3);
+end
+
+function [g,h]=fun2(x)
+    g=-3*x(1)*2*x(2)+6;
+    h=x(1)^2+x(3)-10;
+end
+```

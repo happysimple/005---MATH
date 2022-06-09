@@ -1,0 +1,108 @@
+# 球谐函数
+
+```{note} 
+本文主题：已知二维空间的不均匀散点，基于球谐函数拟合曲面！
+```
+## 1.函数定义
+
+球谐函数模型的表达式见式$(1)-(4)$。式中，$\beta$为纬度，$s$为经度，$N$为球谐函数的最大展开阶数，$\widetilde{C}_{nm}$和$\widetilde{S}_{nm}$为未知的球谐函数系数 (这是我们要计算的变量) ，$\widetilde{P}_{nm}(\sin\beta)$为n度m阶勒让德函数，$MC(n,m)$为归化函数，$P_{nm}(\sin\beta)$为经典勒让德函数，$\delta_{0m}$是kronecker型$\delta$函数。
+
+$$
+\begin{equation}
+	VTEC(\beta,s)=\sum_{n=0}^N\sum_{m=0}^n\widetilde{P}_{nm}(\sin\beta)(\widetilde{C}_{nm}\cos(ms)+\widetilde{S}_{nm}\sin(ms))
+\end{equation}
+$$
+
+$$
+\begin{equation}
+	\widetilde{P}_{nm}(\sin\beta)=MC(n,m)\cdot P_{nm}(\sin\beta)
+\end{equation}
+$$
+
+$$
+\begin{equation}
+	MC(n,m)=\sqrt{(n-m)!(2n+1)(2-\delta_{om})/(n+m)!}
+\end{equation}
+$$
+
+$$
+\begin{equation}
+	\delta_{0m}=\left\{
+	\begin{aligned}
+		0,m=0 \\
+		1,m\ne0
+	\end{aligned}\right.
+\end{equation}
+$$
+
+## 2.方程求解
+
+现在，我们建立计算$VTEC$的等式，见式$(5)$，其中，$\hat{L}$为观测值，$E$为系统偏差。
+
+$$
+\begin{equation}
+	VTEC=\hat{L}+E
+\end{equation}
+$$
+
+现在，建立式(5)的误差方程,见式$(6)$。
+
+$$
+\begin{equation}
+    V=VTEC-E-L
+\end{equation}
+$$
+
+本文以二阶二次多项式为例，利用球谐函数的定义展开$VTEC$,见式$(7)$。
+
+$$
+\begin{equation}
+	\begin{aligned}
+		VTEC&=\widetilde{P}_{00}(sin\beta)\cdot\widetilde{C}_{00}\\
+		&+\widetilde{P}_{10}(sin\beta)\cdot\widetilde{C}_{10}
+		+\widetilde{P}_{11}(sin\beta)\cdot\widetilde{C}_{11}\cos(s)
+		+\widetilde{P}_{11}(sin\beta)\cdot\widetilde{S}_{11}\sin(s)\\
+		&+\widetilde{P}_{20}(sin\beta)\cdot\widetilde{C}_{20}
+		+\widetilde{P}_{21}(sin\beta)\cdot\widetilde{C}_{21}\cos(2s)
+		+\widetilde{P}_{21}(sin\beta)\cdot\widetilde{S}_{21}\sin(s)\\
+		&+\widetilde{P}_{22}(sin\beta)\cdot\widetilde{C}_{22}\cos(2s)
+		+\widetilde{P}_{22}(sin\beta)\cdot\widetilde{S}_{22}\sin(2s)
+	\end{aligned}
+\end{equation}
+$$
+
+将展开的$VTEC$代入到式$(6)$，然后将式$(6)$简记为$V=AX-L$，其中，$A$和$X$见式$(8)$。
+
+$$
+\begin{equation}
+	\begin{aligned}
+		A=[&\widetilde{P}_{00}(sin\beta),\widetilde{P}_{10}(sin\beta),\widetilde{P}_{11}(sin\beta)\cdot\cos(s),\widetilde{P}_{11}(sin\beta)\cdot\sin(s),\widetilde{P}_{20}(sin\beta),\\
+	    &\widetilde{P}_{21}(sin\beta)\cdot\cos(2s),\widetilde{P}_{21}(sin\beta)\cdot\sin(s),\widetilde{P}_{22}(sin\beta)\cdot\cos(2s),\widetilde{P}_{22}(sin\beta)\cdot\\
+		&\sin(2s),-1].\\
+		X=[&\widetilde{C}_{00},\widetilde{C}_{10},\widetilde{C}_{11},\widetilde{S}_{11},\widetilde{C}_{20},\widetilde{C}_{21},\widetilde{S}_{21},\widetilde{C}_{22},\widetilde{S}_{22},E].
+	\end{aligned}
+\end{equation}
+$$
+
+现在，采用间接平差计算球谐系数，见式$(9)$，其中，$P$为权阵，若数据质量相同，可以设置为单位阵。
+
+$$
+X=(A^TPA)^{-1}(A^TPL)
+$$
+
+现在我们得到了球谐系数，因此，可以利用式$(7)$计算$VTEC$。
+
+```{tip}
+程序见{download}`球谐函数<../_static/球谐函数.zip>`
+```
+
+程序效果：
+
+<img src="E:\002---Web\005---MATH\source\_static\13.png" alt="13" style="zoom:12%;" />
+
+参考文献：
+
+```latex
+[1] Schaer S . Mapping and Predicting the Earth's Ionosphere Using the Global Positioning System[J]. Geod Geophys.arb.schweiz, 1999.
+[2]李新星. 基于球谐函数构建VTEC模式与精度分析[D]. 中国地震局地震研究所, 2017.
+```

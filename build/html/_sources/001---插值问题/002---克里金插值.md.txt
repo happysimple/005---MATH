@@ -1,0 +1,61 @@
+# 克里金插值
+
+观测点$x_i(lon_i , lat_i)$和观测点$x_j(lon_j , lat_j)$两点间的距离为 $d_{ij}$，见公式$(1)$，$sf$是尺度因子，经验值是0.2。
+
+$$
+d_{ij}=\sqrt{(sf(lon_i-lon_j))^2+(lat_i-lat_j)^2}
+$$
+
+观测点$x_i(lon_i , lat_i)$和插值点$x_0(lon_0 , lat_0)$两点间的距离为 $d_{i0}$，见公式$(2)$。
+
+$$
+d_{i0}=\sqrt{(lon_i-lon_0)^2+(lat_i-lat_0)^2}
+$$
+
+下面选取插值点周围的四个观测点参与插值，在线性无偏、最优估计条件下, 得到插值的Kriging方程组为
+
+$$
+\begin{cases}
+\sum\limits_{j=1}^4d_{ij}\lambda_{j}+\mu=d_{i0}\\
+\sum\limits_{j=1}^4\lambda_j=1
+\end{cases}
+$$
+
+式中，$\mu$为拉格朗日乘数因子，$\lambda_j$为加权系数，$d_{i0}$为观测点和插值点之间的距离，$d_{ij}$为观测点之间的距离，展开方程组，用矩阵的形式表示，见式$(4)$。
+
+$$
+K\lambda=D
+$$
+
+其中，$K=\begin{bmatrix}
+	d_{11} & d_{12} & d_{13} & d_{14} & 1\\
+	d_{21} & d_{22} & d_{23} & d_{24} & 1\\
+	d_{31} & d_{32} & d_{33} & d_{34} & 1\\
+	d_{41} & d_{42} & d_{43} & d_{44} & 1\\
+	1 & 1 & 1 & 1 & 0
+\end{bmatrix},$$\lambda=\begin{bmatrix}
+	\lambda_{1}\\
+	\lambda_{2}\\
+	\lambda_{3}\\
+	\lambda_{4}\\
+	u
+\end{bmatrix},$$D=\begin{bmatrix}
+	d_{14}\\
+	d_{24}\\
+	d_{34}\\
+	d_{44}\\
+	1
+\end{bmatrix}.$式中，$K$和$D$已知，因此可以计算出 $\lambda$ ，然后通过公式$(5)$求出插值点的函数值。
+
+$$
+\begin{equation}\label{eqTEC}
+	\hat{Z}(lon_0,lat_0)=\sum_{i=1}^n\lambda_i\cdot Z(lon_i,lat_i)
+\end{equation}
+$$
+
+参考文献：
+
+```latex
+[1]朱永兴, 谭述森, 杜兰,等. 顾及粗差影响的全球电离层克里金插值及精度分析[J]. 测绘学报, 2019, 48(7):9.
+[2]沈云中, 陶本藻. 实用测量数据处理方法[M]. 测绘出版社, 2012.
+```

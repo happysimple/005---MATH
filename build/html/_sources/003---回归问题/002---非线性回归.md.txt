@@ -1,0 +1,61 @@
+# 非线性回归
+
+## 1.polyfit
+
+- $p(x)=p_1x^n+p_2x^{n-1}+...+p_nx+p_{n+1}$
+
+- `poyfit` 在拟合中使用具有缺失值的观测值
+
+```matlab
+% 加载数据
+load carbig
+X = Acceleration;
+Y = Horsepower;
+
+% 剔除NAN
+D = [X,Y];
+D = rmmissing(D,1);
+X = D(:,1);
+Y = D(:,2);
+
+% 一元非线性回归
+p=polyfit(X,Y,2);
+
+% 建立方程
+syms x
+YFIT = p(1)*x^2 + p(2)*x + p(3);
+YFIT = vpa(YFIT,3);
+
+% 根据自变量求值
+x=linspace(min(X),max(X));
+y=polyval(p,x);
+
+% R
+R=corrcoef(X,Y);
+
+% 绘图
+plot(X,Y,'.',x,y,'-');
+```
+
+## 2.fitnlm
+
+- `fitlm` 将X和 Y 中的 `NaN`视为缺失值，`fitnlm` 在拟合中不使用具有缺失值的观测值。
+
+```matlab
+% 加载数据
+load carbig
+X = [Horsepower,Weight];
+Y = MPG;
+
+% 多元非线性回归
+modelfun = @(b,x)b(1) + (x(:,1).^b(2))*b(3) + (x(:,2).^b(4))*b(5);
+beta0 = [-50 -1 500 -1 500];
+mdl = fitnlm(X,Y,modelfun,beta0);
+coef = mdl.Coefficients.Estimate;
+
+% 根据自变量求值
+y = modelfun(coef,[1,2]);
+
+% R^2
+R2 = mdl.Rsquared.Ordinary;
+```

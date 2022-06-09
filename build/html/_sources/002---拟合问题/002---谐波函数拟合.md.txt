@@ -1,0 +1,40 @@
+# 谐波函数拟合
+
+$$
+\begin{align}	
+f(x)&=\sum_{i=1}^4A_icos(\frac{2\pi i\cdot x}{T})+B_icos(\frac{2\pi i\cdot x}{T})
+\end{align}
+$$
+
+```matlab
+clear;clc;
+
+% 加载数据
+X=0:0.1:20;
+Y=10*sin(X)+randn(1,numel(X));
+T=20;
+
+% 构造函数
+fun=@(a,X)(a(1)*cos(2*pi*X/T)+a(2)*sin(2*pi*X/T)+...
+           a(3)*cos(4*pi*X/T)+a(4)*sin(4*pi*X/T)+...
+           a(5)*cos(6*pi*X/T)+a(6)*sin(6*pi*X/T)+...
+           a(7)*cos(8*pi*X/T)+a(8)*sin(8*pi*X/T))+a(9);
+a0=ones(1,9);
+a=lsqcurvefit(fun,a0,X,Y);
+
+% 计算拟合值
+TEC=fun(a,X);
+
+% 绘图
+hold on
+box on
+plot(X,Y,'.')
+plot(X,TEC,'-','LineWidth',1.2);
+legend('离散点','拟合曲线');
+hold off;
+```
+
+<img src="..\_static\12.png" alt="12" style="zoom:50%;" />
+
+
+

@@ -1,0 +1,58 @@
+# 线性回归
+
+## 1.regress
+
+- 拟合算法是最小二乘算法
+
+- `regress` 将 X或Y中的 `NaN `值视为缺失值。`regress` 在回归拟合中忽略具有缺失值的观测值
+- 要计算具有常数项（截距）的模型的系数估计值，请在矩阵 X 中包含一个由1构成的列
+
+```matlab
+% 加载数据
+load carsmall
+
+% 多元线性回归
+X = [ones(size(Weight)) Weight Horsepower Weight.*Horsepower];
+Y = MPG;
+[coef,~,r,rint,stats] = regress(Y,X,0.05);% coef:多元线性回归的系数估计值
+                                           % r:残差
+                                           % rint:置信区间
+                                           % status(1):R^2
+                                           % 置信水平：100*(1-0.05)%
+
+% 建立方程
+YFIT  = @(x)coef(1) + coef(2)*x(:,1) + coef(3)*x(:,2) + coef(4)*x(:,3);
+
+% 根据自变量求值
+y = YFIT([1,2,3]);
+
+% R^2
+R2 = stats(1);
+```
+
+## 2.fitlm
+
+- 主拟合算法是 QR 分解
+- `fitlm` 将X和 Y 中的 `NaN`、`''`、`""`、`<missing>` 和 `<undefined>` 值视为缺失值。`fitlm` 在拟合中不使用具有缺失值的观测值
+- 由 `fitlm` 创建的模型始终包含截距项，除非您使用 `'Intercept'`指定不包含它
+
+```matlab
+% 加载数据
+load carsmall
+X = [Weight,Horsepower,Acceleration];
+Y = MPG;
+
+% 多元线性回归
+mdl = fitlm(X,Y);
+coef = mdl.Coefficients.Estimate;
+
+% 建立方程
+syms x1 x2 x3
+YFIT = @(x)coef(1) + coef(2)*x(:,1) + coef(3)*x(:,2) + coef(4)*x(:,3);
+
+% 根据自变量求值
+y = YFIT([1,2,3]);
+
+% R^2
+R2 = mdl.Rsquared.Ordinary;
+```
