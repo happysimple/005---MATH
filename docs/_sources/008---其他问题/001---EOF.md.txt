@@ -1,0 +1,162 @@
+# EOF
+
+## 原理
+
+现在，我们有$m$个空间点，每个空间点有$n$个观测(不同时间下的)，构成了矩阵$A(m\times n)$。
+
+现在，我们对$A$进行$EOF$分解，见下式！
+
+$$
+A=VY
+$$
+
+其中，$V(m\times m)$是空间函数，$Y(m\times n)$是时间函数。而且，$V$和$Y$都是正交的！这意味着有下式：
+
+$$
+v_kv_l=\sum\limits_{i=1}^mv_{ki}v_{il}^T=
+\begin{cases}
+0(k\ne l)\\
+1(k=l)
+\end{cases}
+$$
+
+$$
+y_ky_l=\sum\limits_{i=1}^ny_{ki}y_{il}^T=
+\begin{cases}
+0(k\ne l)\\
+\lambda_k(k=l)
+\end{cases}
+$$
+
+因此，$VV^T=V^TV=E,YY^T=Y^TY=\wedge$。
+
+---
+
+现在，我们的目标是求出$V$和$Y$！
+
+将式$(1)$右乘$A^T$,式$(1)$变为下式：
+
+$$
+\begin{align}
+AA^T&=VYY^TV^T\\
+&=V\wedge V^T
+\end{align}
+$$
+
+将式(4)右乘$V$,式(4)变为下式：
+
+$$
+\begin{align}
+AA^TV&=V\wedge V^TV\\
+&=V\wedge E\\
+&=V\wedge
+\end{align}
+$$
+
+记$C=AA^T$,则上式变为：
+
+$$
+CV=V\wedge
+$$
+
+由上式可以计算$C$的特征值及特征向量，根据特征值大小对特征值和特征向量进行排序，称$\lambda_1$对应的特征向量为第一经验正交分解模态，以此类推。
+
+由式$(1)$可知：
+
+$$
+Y=V^TA
+$$
+
+如上，$V$和$Y$全部计算出来了！
+
+---
+
+现在，计算每个模态的贡献占比(方差解释度)：
+
+$$
+expv_k=\frac{\lambda_k}{\sum\limits_{i=1}^m\lambda_i}
+$$
+
+## 代码实现
+
+这里采用Climate Data Toolbox进行EOF求解！
+
+1.加载数据($60\times55\times802$)，分别代表经度，纬度，时间
+
+```matlab
+load pacific_sst.mat
+```
+
+2.去线性趋势
+
+```matlab
+sst = detrend3(sst,t);
+```
+
+3.去季节性
+
+```matlab
+sst = deseason(sst,t);
+```
+
+4.计算本征模和时间序列
+
+```matlab
+[eof_maps,pc,expv] = eof(sst);
+```
+
+5.缩放前6阶本征模和时间序列(使时间序列介于0-1)
+
+```matlab
+for k = 1:6
+   maxval = max(abs(pc(k,:)));
+   pc(k,:) = pc(k,:)/maxval;
+   eof_maps(:,:,k) = eof_maps(:,:,k)*maxval;
+end
+```
+
+6.绘制缩放后前6阶时间序列
+
+```matlab
+s = [-1 1 -1 1 -1 1];% 根据实际需要变号
+figure;
+for k=1:6
+   subplot(3,2,k)
+   anomaly(t,pc(k,:)*s(k),'topcolor',rgb('bubblegum'),'bottomcolor',rgb('periwinkle blue'));
+   axis tight
+   datetick('x','yyyy','keeplimits')
+   title(['Mode ',num2str(k),' (',num2str(expv(k),'%0.1f'),'%)'])
+end
+```
+
+<img src="..\_static\y002.png" alt="001" style="zoom:20%;" />
+
+7.绘制缩放后前6阶本征模
+
+```matlab
+s = [-1 1 -1 1 -1 1];% 要与时间序列变号一致
+figure;
+for k = 1:6
+   subplot(3,2,k)
+   imagescn(lon,lat,eof_maps(:,:,k)*s(k));
+   colormap(gcf,cmocean('balance'));
+   title(['Mode ',num2str(k),' (',num2str(expv(k),'%0.1f'),'%)'])
+end
+```
+
+<img src="..\_static\y001.png" alt="001" style="zoom:20%;" />
+
+8.计算前6阶本征模贡献占比
+
+```matlab
+sum(expv(1:6))
+```
+
+9.基于前三阶本征模和时间序列重塑数据
+
+```matlab
+sst_f = reof(eof_maps,pc,1:3);
+```
+
+**资料:**
+[1].https://www.chadagreene.com/CDT/eof_documentation.html

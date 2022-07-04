@@ -1,0 +1,21 @@
+# 对一维数据插值
+
+```{tip}
+建议使用griddedInterpolant函数,它比interp1、interp2、interp3 或 interpn计算插值更快！
+```
+
+```matlab
+% 构造数据
+x = sort(20*rand(100,1));
+y = besselj(0,x);
+
+% 创建插值对象
+F = griddedInterpolant(x,y,'linear');
+
+% 插值
+xq = linspace(0,20,200);
+yq = F(xq);
+
+% 插值方法
+% 'linear'(默认)|'nearest'|'next'|'previous'|'pchip'|'cubic'|'spline'|'makima'
+```

@@ -1,0 +1,245 @@
+# BP神经网络
+
+## 第1部分：单变量预测单变量
+
+1.加载数据
+
+```matlab
+% 备注：A有四列，下面仅用A的第2列
+load A 
+```
+
+
+
+2.划分训练数据与测试数据
+
+```matlab
+num = size(A,1);     % 总数据量
+scale = 0.8;         % 训练数据所占比例
+num_train = fix(scale * num);   % 训练数据个数
+num_test = num-num_train;       % 测试数据的个数
+mytrain = A(1:num_train,2)';    % 训练数据(行向量)
+mytest = A(num_train+1:num_train+num_test,2)';  % 测试数据(行向量)
+```
+
+
+
+3.构造训练集
+
+```matlab
+% 利用前7天数据滚动预测后1天数据
+for i=1:num_train-7
+    x(:,i)=mytrain(i:i+6);
+    y(:,i)=mytrain(i+7);
+end
+```
+
+这部分代码将训练数据构造为输入数据$x$和响应数据$y$，即在BP神经网络中输入$x(:,i)$，则得到$y(:,i)$，每一列都是一个样本，共2037个样本。
+
+
+
+4.构建BP神经网络
+
+```matlab
+net=feedforwardnet(24);   % 1个包含24个神经元的隐含层
+```
+
+
+
+5.设置默认参数
+
+```matlab
+net.trainParam.lr=0.001;     % 学习速率
+net.trainParam.epochs=300;   % 最大训练次数
+net.trainParam.showWindow=1; % 显示训练窗口
+net.trainParam.show=25;      % 两次显示之间的训练步数
+net.trainParam.goal=0.0001;  % 训练目标
+net.trainParam.time=inf;     % 训练时间
+```
+
+
+
+6.训练网络
+
+```matlab
+net=train(net,x,y);
+```
+
+
+
+7.构造测试集
+
+```matlab
+for i=1:num_test-7
+    u(:,i)=mytest(i:i+6);
+    v(:,i)=mytest(i+7);
+end
+```
+
+
+
+8.测试BP神经网络
+
+```matlab
+v_pred = sim(net,u);
+```
+
+
+
+9.绘图
+
+```matlab
+figure;
+hold on 
+box on
+plot(8:num_test,v,'LineWidth',1.2);
+plot(8:num_test,v_pred,'LineWidth',1.2);
+xlim([0,550]);
+xlabel('Day');
+ylabel('H (m)');
+legend('True','Predict');
+hold off
+set(gca,'FontSize',12);
+set(gcf,'Units','centimeters','Position',[8 5 15 8]);
+```
+
+
+
+## 第2部分：多变量预测单变量
+
+1.加载数据
+
+```
+% 备注：A有四列
+load A 
+```
+
+
+
+2.划分训练数据与测试数据
+
+```matlab
+num = size(A,1);     % 总数据量
+scale = 0.8;         % 训练数据所占比例
+num_train = fix(scale * num);   % 训练数据个数
+num_test = num-num_train;       % 测试数据的个数
+mytrain = A(1:num_train,:)';    % 训练数据(行向量)
+mytest = A(num_train+1:num_train+num_test,:)';  % 测试数据(行向量)
+```
+
+
+
+3.训练数据归一化
+
+```
+[mytrain_norm,ref1] = mapminmax(mytrain,0,1);
+[~,ref2] = mapminmax(mytrain(2,:),0,1);
+```
+
+因为是多变量预测，每个变量的变化范围不同，需要进行归一化处理
+
+
+
+4.构造训练集
+
+```
+for i=1:num_train-7
+    x(:,i)=reshape(mytrain_norm(:,i:i+6),[],1);
+    y(:,i)=mytrain_norm(2,i+7);
+end
+```
+
+这部分代码将训练数据构造为输入数据$x$和响应数据$y$，即在BP神经网络中输入$x(:,i)$，则得到$y(:,i)$，每一列都是一个样本，共2037个样本。
+
+
+
+5.构建BP神经网络
+
+```matlab
+net=feedforwardnet(24);   % 1个包含24个神经元的隐含层
+```
+
+
+
+6.设置默认参数
+
+```matlab
+net.trainParam.lr=0.001;     % 学习速率
+net.trainParam.epochs=300;   % 最大训练次数
+net.trainParam.showWindow=1; % 显示训练窗口
+net.trainParam.show=25;      % 两次显示之间的训练步数
+net.trainParam.goal=0.0001;  % 训练目标
+net.trainParam.time=inf;     % 训练时间
+```
+
+
+
+7.训练网络
+
+```matlab
+net=train(net,x,y);
+```
+
+
+
+8.测试数据归一化
+
+```matlab
+mytest_norm=mapminmax('apply',mytest,ref1);
+```
+
+这里的$ref1$来自于第3步！测试数据要与训练数据使用相同的归一化！
+
+
+
+9.构造测试数据
+
+```matlab
+for i=1:num_test-7
+    u(:,i)=reshape(mytest_norm(:,i:i+6),[],1);
+    v(:,i)=mytest_norm(2,i+7);
+end
+```
+
+
+
+10.测试BP神经网络
+
+```
+v_pred = sim(net,u);
+```
+
+
+
+11.预测数据去归一化
+
+```
+v_pred = mapminmax('reverse',v_pred,ref2);
+v = mapminmax('reverse',v,ref2);
+```
+
+这里的$ref2$来自第3步！
+
+
+
+12.绘图
+
+```matlab
+figure;
+hold on 
+box on
+plot(8:num_test,v,'LineWidth',1.2);
+plot(8:num_test,v_pred,'LineWidth',1.2);
+xlim([0,550]);
+xlabel('Day');
+ylabel('H (m)');
+legend('True','Predict');
+hold off
+set(gca,'FontSize',12);
+set(gcf,'Units','centimeters','Position',[8 5 15 8]);
+exportgraphics(gcf,'002.png','Resolution',600);
+```
+
+**获取程序:**
+
+{download}`BP神经网络<../_static/BP神经网络.zip>`

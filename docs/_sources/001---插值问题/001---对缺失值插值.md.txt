@@ -1,0 +1,22 @@
+# 对缺失值插值
+
+```matlab
+% 构造数据
+A = [1   2    3
+     2   3  -999
+     3  -999  5
+     4   9    8];
+
+% 插入标准缺失值
+B = standardizeMissing(A,-999);
+
+% 替换标准缺失值
+F = fillmissing(B,'linear',1);% 1表示按列
+
+% 插值方法：
+% previous:上一个非缺失值
+% next:下一个非缺失值
+% nearest:距离最近的非缺失值
+% linear:相邻非缺失值的线性插值
+```
+

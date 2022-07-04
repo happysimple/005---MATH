@@ -98,7 +98,7 @@ $$
 
 程序效果：
 
-<img src="E:\002---Web\005---MATH\source\_static\13.png" alt="13" style="zoom:12%;" />
+<img src="..\_static\13.png" alt="13" style="zoom:12%;" />
 
 参考文献：
 

@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EOF &mdash; Math 1.0.0 documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/copybutton.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/panels-bootstrap.5fd3999ee7762ccc51105388f4a9d115.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+        <script src="../_static/clipboard.min.js"></script>
+        <script src="../_static/copybutton.js"></script>
+        <script>window.MathJax = {"options": {"processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> Math
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../001---%E6%8F%92%E5%80%BC%E9%97%AE%E9%A2%98/index.html">插值问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../002---%E6%8B%9F%E5%90%88%E9%97%AE%E9%A2%98/index.html">拟合问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../003---%E5%9B%9E%E5%BD%92%E9%97%AE%E9%A2%98/index.html">回归问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../004---%E8%A7%84%E5%88%92%E9%97%AE%E9%A2%98/index.html">规划问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../005---%E6%9C%80%E5%B0%8F%E4%BA%8C%E4%B9%98%E9%97%AE%E9%A2%98/index.html">最小二乘问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../006---%E5%B9%B3%E5%B7%AE%E9%97%AE%E9%A2%98/index.html">平差问题</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../007---%E9%A2%84%E6%B5%8B%E9%97%AE%E9%A2%98/index.html">BP神经网络</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">Math</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>EOF</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/008---其他问题/001---EOF.md.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section class="tex2jax_ignore mathjax_ignore" id="eof">
+<h1>EOF<a class="headerlink" href="#eof" title="Permalink to this headline"></a></h1>
+<section id="id1">
+<h2>原理<a class="headerlink" href="#id1" title="Permalink to this headline"></a></h2>
+<p>现在，我们有<span class="math notranslate nohighlight">\(m\)</span>个空间点，每个空间点有<span class="math notranslate nohighlight">\(n\)</span>个观测(不同时间下的)，构成了矩阵<span class="math notranslate nohighlight">\(A(m\times n)\)</span>。</p>
+<p>现在，我们对<span class="math notranslate nohighlight">\(A\)</span>进行<span class="math notranslate nohighlight">\(EOF\)</span>分解，见下式！</p>
+<div class="math notranslate nohighlight">
+\[
+A=VY
+\]</div>
+<p>其中，<span class="math notranslate nohighlight">\(V(m\times m)\)</span>是空间函数，<span class="math notranslate nohighlight">\(Y(m\times n)\)</span>是时间函数。而且，<span class="math notranslate nohighlight">\(V\)</span>和<span class="math notranslate nohighlight">\(Y\)</span>都是正交的！这意味着有下式：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+v_kv_l=\sum\limits_{i=1}^mv_{ki}v_{il}^T=
+\begin{cases}
+0(k\ne l)\\
+1(k=l)
+\end{cases}
+\end{split}\]</div>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+y_ky_l=\sum\limits_{i=1}^ny_{ki}y_{il}^T=
+\begin{cases}
+0(k\ne l)\\
+\lambda_k(k=l)
+\end{cases}
+\end{split}\]</div>
+<p>因此，<span class="math notranslate nohighlight">\(VV^T=V^TV=E,YY^T=Y^TY=\wedge\)</span>。</p>
+<hr class="docutils" />
+<p>现在，我们的目标是求出<span class="math notranslate nohighlight">\(V\)</span>和<span class="math notranslate nohighlight">\(Y\)</span>！</p>
+<p>将式<span class="math notranslate nohighlight">\((1)\)</span>右乘<span class="math notranslate nohighlight">\(A^T\)</span>,式<span class="math notranslate nohighlight">\((1)\)</span>变为下式：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+AA^T&amp;=VYY^TV^T\\
+&amp;=V\wedge V^T
+\end{align}
+\end{split}\]</div>
+<p>将式(4)右乘<span class="math notranslate nohighlight">\(V\)</span>,式(4)变为下式：</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}
+\begin{align}
+AA^TV&amp;=V\wedge V^TV\\
+&amp;=V\wedge E\\
+&amp;=V\wedge
+\end{align}
+\end{split}\]</div>
+<p>记<span class="math notranslate nohighlight">\(C=AA^T\)</span>,则上式变为：</p>
+<div class="math notranslate nohighlight">
+\[
+CV=V\wedge
+\]</div>
+<p>由上式可以计算<span class="math notranslate nohighlight">\(C\)</span>的特征值及特征向量，根据特征值大小对特征值和特征向量进行排序，称<span class="math notranslate nohighlight">\(\lambda_1\)</span>对应的特征向量为第一经验正交分解模态，以此类推。</p>
+<p>由式<span class="math notranslate nohighlight">\((1)\)</span>可知：</p>
+<div class="math notranslate nohighlight">
+\[
+Y=V^TA
+\]</div>
+<p>如上，<span class="math notranslate nohighlight">\(V\)</span>和<span class="math notranslate nohighlight">\(Y\)</span>全部计算出来了！</p>
+<hr class="docutils" />
+<p>现在，计算每个模态的贡献占比(方差解释度)：</p>
+<div class="math notranslate nohighlight">
+\[
+expv_k=\frac{\lambda_k}{\sum\limits_{i=1}^m\lambda_i}
+\]</div>
+</section>
+<section id="id2">
+<h2>代码实现<a class="headerlink" href="#id2" title="Permalink to this headline"></a></h2>
+<p>这里采用Climate Data Toolbox进行EOF求解！</p>
+<p>1.加载数据(<span class="math notranslate nohighlight">\(60\times55\times802\)</span>)，分别代表经度，纬度，时间</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">load</span><span class="w"> </span><span class="n">pacific_sst</span><span class="p">.</span><span class="n">mat</span><span class="w"></span>
+</pre></div>
+</div>
+<p>2.去线性趋势</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sst</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">detrend3</span><span class="p">(</span><span class="n">sst</span><span class="p">,</span><span class="n">t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>3.去季节性</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sst</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">deseason</span><span class="p">(</span><span class="n">sst</span><span class="p">,</span><span class="n">t</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>4.计算本征模和时间序列</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="n">eof_maps</span><span class="p">,</span><span class="n">pc</span><span class="p">,</span><span class="n">expv</span><span class="p">]</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">eof</span><span class="p">(</span><span class="n">sst</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p>5.缩放前6阶本征模和时间序列(使时间序列介于0-1)</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="w"></span>
+<span class="w">   </span><span class="n">maxval</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="nb">max</span><span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">pc</span><span class="p">(</span><span class="n">k</span><span class="p">,:)));</span><span class="w"></span>
+<span class="w">   </span><span class="n">pc</span><span class="p">(</span><span class="n">k</span><span class="p">,:)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">pc</span><span class="p">(</span><span class="n">k</span><span class="p">,:)</span><span class="o">/</span><span class="n">maxval</span><span class="p">;</span><span class="w"></span>
+<span class="w">   </span><span class="n">eof_maps</span><span class="p">(:,:,</span><span class="n">k</span><span class="p">)</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">eof_maps</span><span class="p">(:,:,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">maxval</span><span class="p">;</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<p>6.绘制缩放后前6阶时间序列</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="c">% 根据实际需要变号</span><span class="w"></span>
+<span class="nb">figure</span><span class="p">;</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="p">=</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="w"></span>
+<span class="w">   </span><span class="nb">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">anomaly</span><span class="p">(</span><span class="n">t</span><span class="p">,</span><span class="n">pc</span><span class="p">(</span><span class="n">k</span><span class="p">,:)</span><span class="o">*</span><span class="n">s</span><span class="p">(</span><span class="n">k</span><span class="p">),</span><span class="s">&#39;topcolor&#39;</span><span class="p">,</span><span class="n">rgb</span><span class="p">(</span><span class="s">&#39;bubblegum&#39;</span><span class="p">),</span><span class="s">&#39;bottomcolor&#39;</span><span class="p">,</span><span class="n">rgb</span><span class="p">(</span><span class="s">&#39;periwinkle blue&#39;</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="n">axis</span><span class="w"> </span><span class="s">tight</span><span class="w"></span>
+<span class="w">   </span><span class="nb">datetick</span><span class="p">(</span><span class="s">&#39;x&#39;</span><span class="p">,</span><span class="s">&#39;yyyy&#39;</span><span class="p">,</span><span class="s">&#39;keeplimits&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="nb">title</span><span class="p">([</span><span class="s">&#39;Mode &#39;</span><span class="p">,</span><span class="nb">num2str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span><span class="s">&#39; (&#39;</span><span class="p">,</span><span class="nb">num2str</span><span class="p">(</span><span class="n">expv</span><span class="p">(</span><span class="n">k</span><span class="p">),</span><span class="s">&#39;%0.1f&#39;</span><span class="p">),</span><span class="s">&#39;%)&#39;</span><span class="p">])</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<img src="..\_static\y002.png" alt="001" style="zoom:20%;" />
+<p>7.绘制缩放后前6阶本征模</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">s</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="w"> </span><span class="o">-</span><span class="mi">1</span><span class="w"> </span><span class="mi">1</span><span class="p">];</span><span class="c">% 要与时间序列变号一致</span><span class="w"></span>
+<span class="nb">figure</span><span class="p">;</span><span class="w"></span>
+<span class="k">for</span><span class="w"> </span><span class="n">k</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="w"></span>
+<span class="w">   </span><span class="nb">subplot</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="n">k</span><span class="p">)</span><span class="w"></span>
+<span class="w">   </span><span class="n">imagescn</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span><span class="n">lat</span><span class="p">,</span><span class="n">eof_maps</span><span class="p">(:,:,</span><span class="n">k</span><span class="p">)</span><span class="o">*</span><span class="n">s</span><span class="p">(</span><span class="n">k</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="nb">colormap</span><span class="p">(</span><span class="nb">gcf</span><span class="p">,</span><span class="n">cmocean</span><span class="p">(</span><span class="s">&#39;balance&#39;</span><span class="p">));</span><span class="w"></span>
+<span class="w">   </span><span class="nb">title</span><span class="p">([</span><span class="s">&#39;Mode &#39;</span><span class="p">,</span><span class="nb">num2str</span><span class="p">(</span><span class="n">k</span><span class="p">),</span><span class="s">&#39; (&#39;</span><span class="p">,</span><span class="nb">num2str</span><span class="p">(</span><span class="n">expv</span><span class="p">(</span><span class="n">k</span><span class="p">),</span><span class="s">&#39;%0.1f&#39;</span><span class="p">),</span><span class="s">&#39;%)&#39;</span><span class="p">])</span><span class="w"></span>
+<span class="k">end</span><span class="w"></span>
+</pre></div>
+</div>
+<img src="..\_static\y001.png" alt="001" style="zoom:20%;" />
+<p>8.计算前6阶本征模贡献占比</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="nb">sum</span><span class="p">(</span><span class="n">expv</span><span class="p">(</span><span class="mi">1</span><span class="p">:</span><span class="mi">6</span><span class="p">))</span><span class="w"></span>
+</pre></div>
+</div>
+<p>9.基于前三阶本征模和时间序列重塑数据</p>
+<div class="highlight-matlab notranslate"><div class="highlight"><pre><span></span><span class="n">sst_f</span><span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="n">reof</span><span class="p">(</span><span class="n">eof_maps</span><span class="p">,</span><span class="n">pc</span><span class="p">,</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">);</span><span class="w"></span>
+</pre></div>
+</div>
+<p><strong>资料:</strong>
+[1].https://www.chadagreene.com/CDT/eof_documentation.html</p>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2022, 王开心.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

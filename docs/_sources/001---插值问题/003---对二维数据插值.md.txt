@@ -1,0 +1,34 @@
+# 对二维数据插值
+
+方法1
+
+```matlab
+% 构造数据
+[x,y] = ndgrid(-5:0.8:5);
+z = sin(x.^2 + y.^2) ./ (x.^2 + y.^2);
+
+% 创建插值对象
+F = griddedInterpolant(x,y,z,'linear');
+
+% 插值
+[xq,yq] = ndgrid(-5:0.1:5);
+zq = F(xq,yq);
+```
+
+方法2
+
+```matlab
+% 构造数据
+x = -5:0.8:5;
+y = x';
+z = sin(x.^2 + y.^2) ./ (x.^2 + y.^2);
+
+% 创建插值对象
+F = griddedInterpolant({x,y},z,'linear');
+
+% 插值
+xq = -5:0.1:5;
+yq = xq';
+zq = F({xq,yq});
+```
+
